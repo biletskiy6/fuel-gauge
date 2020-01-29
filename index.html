@@ -6,20 +6,96 @@
 </head>
 
 <style>
+    #fuelGaugeContainer {
+        position: relative;
+        display: inline-block;
+        width: 300px;
+        height: 200px;
+    }
+
+    .fuel-icon {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 40%;
+    }
+
     svg {
         background: #000;
         border-top-left-radius: 144px;
         border-top-right-radius: 144px;
     }
 
+    .line {
+        position: absolute;
+        display: inline-block;
+        width: 22px;
+        height: 11px;
+        background: #fff;
+        bottom: 0;
+    }
+
+    .line--first {
+        bottom: 62px;
+        left: 28px;
+        transform: rotate(20deg);
+        background: #DC3912;
+    }
+
+    .line--second {
+        bottom: 94px;
+        left: 41px;
+        height: 6px;
+        transform: rotate(28deg);
+    }
+
+    .line--third {
+        bottom: 127px;
+        left: 67px;
+        height: 6px;
+        transform: rotate(45deg);
+    }
+
+    .line--foufth {
+        height: 6px;
+        bottom: 148px;
+        left: 100px;
+        transform: rotate(60deg);
+    }
+
+    .line--ninth {
+        bottom: 62px;
+        right: 28px;
+        transform: rotate(-20deg);
+        background: #fff;
+    }
+
+    .line--fifth {
+        top:35px;
+        bottom: auto;
+        left: 50%;
+        transform: translateX(-50%) rotate(90deg);
+    }
+
 </style>
 
 
 <body onload="initialize()">
-<span id="fuelGaugeContainer"></span>
-
-
-<input id="fuel-amount" type="text">
+<span id="fuelGaugeContainer">
+    <span class="line line--first"></span>
+    <span class="line line--second"></span>
+    <span class="line line--third"></span>
+    <span class="line line--foufth"></span>
+    <span class="line line--fifth"></span>
+    <span class="line line--sixth"></span>
+    <span class="line line--seventh"></span>
+    <span class="line line--eighth"></span>
+    <span class="line line--ninth"></span>
+    <span class="line line--tenth"></span>
+    <img src="fuel.svg" class="fuel-icon" alt="">
+</span>
+<!--<input id="fuel-amount" type="text">-->
+<input type="range" min="0" max="100" value="10" class="slider" id="myRange">
 </body>
 
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
@@ -70,11 +146,11 @@
             var number = Math.random() * 100;
             var theNumber = Math.round(number);
             if (theNumber < 11) {
-                gauges[key].drawBand(0, theNumber, "#DC3912");
+                gauges[key].drawBand(0, theNumber, "");
             } else if (10 < number && theNumber < 26) {
-                gauges[key].drawBand(0, theNumber, "#FF9900");
+                gauges[key].drawBand(0, theNumber, "");
             } else {
-                gauges[key].drawBand(0, theNumber, "#109618");
+                gauges[key].drawBand(0, theNumber, "");
             }
             gauges[key].drawRestBand(0, 100, "#ccc");
             gauges[key].redraw(theNumber);
@@ -86,11 +162,11 @@
     function customUpdateGauges(number) {
         for (var key in gauges) {
             if (number < 11) {
-                gauges[key].drawBand(0, number, "#DC3912");
+                gauges[key].drawBand(0, number, "");
             } else if (10 < number && number < 26) {
-                gauges[key].drawBand(0, number, "#FF9900");
+                gauges[key].drawBand(0, number, "");
             } else {
-                gauges[key].drawBand(0, number, "#109618");
+                gauges[key].drawBand(0, number, "");
             }
             gauges[key].drawRestBand(0, 100, "#ccc");
             gauges[key].redraw(number);
@@ -190,6 +266,8 @@
                     var point1 = this.valueToPoint(minor, 0.65);
                     var point2 = this.valueToPoint(minor, 0.85);
 
+
+
                     this.body.append("svg:line")
                         .attr("x1", point1.x)
                         .attr("y1", point1.y)
@@ -202,13 +280,13 @@
                 var point1 = this.valueToPoint(major, 0.6);
                 var point2 = this.valueToPoint(major, 0.9);
 
-                this.body.append("svg:line")
-                    .attr("x1", point1.x)
-                    .attr("y1", point1.y)
-                    .attr("x2", point2.x)
-                    .attr("y2", point2.y)
-                    .style("stroke", "#fff")
-                    .style("stroke-width", "2px");
+                // this.body.append("svg:line")
+                //     .attr("x1", point1.x)
+                //     .attr("y1", point1.y)
+                //     .attr("x2", point2.x)
+                //     .attr("y2", point2.y)
+                //     .style("stroke", "#fff")
+                //     .style("stroke-width", "3px");
 
                 if (major == this.config.max) {
                     var point = this.valueToPoint(major, 0.82);
@@ -265,19 +343,6 @@
                 .style("fill", "#E81D30")
                 .style("stroke", "#E81D30")
                 .style("fill-opacity", 1)
-                .on("mousedown", function (e) {
-
-                    this.addEventListener("mousemove", function (e) {
-                        inscreaseByOnePer();
-                    })
-
-                })
-                .on("mouseup", function (e) {
-                    // this.removeEventListener("mousemove", function () {
-                    //
-                    // });
-                })
-
 
             pointerContainer.append("svg:circle")
                 .attr("cx", this.config.cx)
@@ -334,7 +399,7 @@
             var arc = d3.svg.arc()
                 .innerRadius(0.65 * this.config.raduis)
                 .outerRadius(0.85 * this.config.raduis)
-                .startAngle(0);
+                .startAngle(10);
 
             var bandsdraw = this.body.select(".bands").attr("transform", function () {
                 return "translate(" + self.config.cx + ", " + self.config.cy + ") rotate(270)"
@@ -343,7 +408,7 @@
             if (self.config.I === 0) {
                 var arcs = bandsdraw
                     .datum({endAngle: 0})
-                    .style("fill", color)
+                    .style("fill", "")
                     .attr("d", arc);
             } else {
                 var arcs = bandsdraw
@@ -429,14 +494,19 @@
         this.configure(configuration);
 
 
-        document.querySelector("#fuel-amount").addEventListener("input", function () {
-            var fuelAmount = +document.querySelector("#fuel-amount").value;
+        // document.querySelector("#fuel-amount").addEventListener("input", function () {
+        //     var fuelAmount = +document.querySelector("#fuel-amount").value;
+        //
+        //     if(fuelAmount >= 0 && fuelAmount <= 100) {
+        //         customUpdateGauges(fuelAmount);
+        //     }
+        //
+        // })
 
-            if(fuelAmount >= 0 && fuelAmount <= 100) {
-                customUpdateGauges(fuelAmount);
-            }
+        document.querySelector("#myRange").addEventListener("input", function () {
+            customUpdateGauges(+this.value);
 
-        })
+        });
 
         // document.querySelector(".pointerContainer").addEventListener("click", function () {
         //     alert(1);
