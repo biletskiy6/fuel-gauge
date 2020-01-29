@@ -189,7 +189,7 @@
             for (var major = this.config.min; major <= this.config.max; major += majorDelta) {
                 var minorDelta = majorDelta / this.config.minorTicks;
                 for (var minor = major + minorDelta; minor < Math.min(major + majorDelta, this.config.max); minor += minorDelta) {
-                    var point1 = this.valueToPoint(minor, 0.75);
+                    var point1 = this.valueToPoint(minor, 0.65);
                     var point2 = this.valueToPoint(minor, 0.85);
 
                     this.body.append("svg:line")
@@ -210,7 +210,7 @@
                     .attr("x2", point2.x)
                     .attr("y2", point2.y)
                     .style("stroke", "#fff")
-                    .style("stroke-width", "0px");
+                    .style("stroke-width", "2px");
 
                 if (major == this.config.max) {
                     var point = this.valueToPoint(major, 0.82);
@@ -383,7 +383,7 @@
                 .startAngle(this.valueToRadians(start))
                 .endAngle(this.valueToRadians(end));
             var arcss = bandsdrawn
-                .style("fill", "#ccc")
+                .style("fill", "transparent")
                 .attr("d", arcEnd)
         }
 
