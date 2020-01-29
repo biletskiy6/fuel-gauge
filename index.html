@@ -28,9 +28,7 @@
 
 
     function initialize() {
-        //You can edit the number below to change the fuel level
         createGauge("fuel", "", 10);
-        // setInterval(updateGauges, 5000);
     }
 
 
@@ -42,7 +40,7 @@
                 min: undefined != min ? min : 0,
                 max: undefined != max ? max : 100,
                 level: level,
-                minorTicks: 5
+                minorTicks: 5,
             }
 
         var range = config.max - config.min;
@@ -422,8 +420,8 @@
 
         this.valueToPoint = function (value, factor) {
             return {
-                x: this.config.cx - this.config.raduis * factor * Math.cos(this.valueToRadians(value)),
-                y: this.config.cy - this.config.raduis * factor * Math.sin(this.valueToRadians(value))
+                x: this.config.cx - this.config.raduis  * factor * Math.cos(this.valueToRadians(value)),
+                y: this.config.cy - this.config.raduis  * factor * Math.sin(this.valueToRadians(value))
             };
         }
 
